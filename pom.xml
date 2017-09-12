@@ -127,7 +127,7 @@
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 			<version>${h2.version}</version>
-			<scope>test</scope>
+			<scope>runtime</scope>
 		</dependency>
 
 		<dependency>
@@ -648,18 +648,17 @@
 		</dependency>
 		<!-- Test dependencies - end -->
 
-		<!-- timestamping bouncycastle last release : timestaping and ciphering-->
+		<!-- timestamping bouncycastle last release : timestaping and ciphering -->
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bctsp-jdk16</artifactId>
 			<version>1.46</version>
-		</dependency>
+		</dependency> 
 		<dependency>
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk16</artifactId>
 			<version>1.46</version>
 		</dependency>
-
 		<!-- Database related dependencies - begin -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
