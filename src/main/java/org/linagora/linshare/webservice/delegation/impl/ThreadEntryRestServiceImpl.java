@@ -173,45 +173,45 @@ public class ThreadEntryRestServiceImpl extends WebserviceBase implements
 		}
 	}
 
-	@Path("/copy")
-	@POST
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
-	@ApiOperation(value = "Create a thread entry which will contain the uploaded file.", response = WorkGroupEntryDto.class)
-	@ApiResponses({ @ApiResponse(code = 403, message = "Current logged in account does not have the delegation role."),
-					@ApiResponse(code = 404, message = "Thread entry not found."),
-					@ApiResponse(code = 400, message = "Bad request : missing required fields."),
-					@ApiResponse(code = 500, message = "Internal server error."),
-					})
-	@Override
-	public WorkGroupEntryDto copy(
-			@ApiParam(value = "The owner (user) uuid.", required = true) @PathParam("ownerUuid") String ownerUuid,
-			@ApiParam(value = "The thread uuid.", required = true) @PathParam("threadUuid") String threadUuid,
-			@ApiParam(value = "The document entry uuid.", required = true) @PathParam("entryUuid")  String entryUuid,
-			@ApiParam(value = "True to enable asynchronous upload processing.", required = false) @QueryParam("async") Boolean async)
-					throws BusinessException {
-		// Default mode. No user input.
-		if (async == null) {
-			async = false;
-		}
-		if (async) {
-			logger.debug("Async mode is used");
-			AccountDto actorDto = threadEntryFacade.getAuthenticatedAccountDto();
-			AsyncTaskDto asyncTask = null;
-			try {
-				asyncTask = asyncTaskFacade.create(ownerUuid, entryUuid, AsyncTaskType.DOCUMENT_COPY);
-				ThreadEntryTaskContext tetc = new ThreadEntryTaskContext(actorDto, ownerUuid, threadUuid, entryUuid, null);
-				ThreadEntryCopyAsyncTask task = new ThreadEntryCopyAsyncTask(threadEntryAsyncFacade, tetc, asyncTask);
-				taskExecutor.execute(task);
-				return new WorkGroupEntryDto(asyncTask, tetc);
-			} catch (Exception e) {
-				logAsyncFailure(ownerUuid, asyncTask, e);
-				throw e;
-			}
-		} else {
-			logger.debug("Async mode is not used");
-			return threadEntryFacade.copy(ownerUuid, threadUuid, entryUuid);
-		}
-	}
+//	@Path("/copy")
+//	@POST
+//	@Consumes(MediaType.MULTIPART_FORM_DATA)
+//	@ApiOperation(value = "Create a thread entry which will contain the uploaded file.", response = WorkGroupEntryDto.class)
+//	@ApiResponses({ @ApiResponse(code = 403, message = "Current logged in account does not have the delegation role."),
+//					@ApiResponse(code = 404, message = "Thread entry not found."),
+//					@ApiResponse(code = 400, message = "Bad request : missing required fields."),
+//					@ApiResponse(code = 500, message = "Internal server error."),
+//					})
+//	@Override
+//	public WorkGroupEntryDto copy(
+//			@ApiParam(value = "The owner (user) uuid.", required = true) @PathParam("ownerUuid") String ownerUuid,
+//			@ApiParam(value = "The thread uuid.", required = true) @PathParam("threadUuid") String threadUuid,
+//			@ApiParam(value = "The document entry uuid.", required = true) @PathParam("entryUuid")  String entryUuid,
+//			@ApiParam(value = "True to enable asynchronous upload processing.", required = false) @QueryParam("async") Boolean async)
+//					throws BusinessException {
+//		// Default mode. No user input.
+//		if (async == null) {
+//			async = false;
+//		}
+//		if (async) {
+//			logger.debug("Async mode is used");
+//			AccountDto actorDto = threadEntryFacade.getAuthenticatedAccountDto();
+//			AsyncTaskDto asyncTask = null;
+//			try {
+//				asyncTask = asyncTaskFacade.create(ownerUuid, entryUuid, AsyncTaskType.DOCUMENT_COPY);
+//				ThreadEntryTaskContext tetc = new ThreadEntryTaskContext(actorDto, ownerUuid, threadUuid, entryUuid, null);
+//				ThreadEntryCopyAsyncTask task = new ThreadEntryCopyAsyncTask(threadEntryAsyncFacade, tetc, asyncTask);
+//				taskExecutor.execute(task);
+//				return new WorkGroupEntryDto(asyncTask, tetc);
+//			} catch (Exception e) {
+//				logAsyncFailure(ownerUuid, asyncTask, e);
+//				throw e;
+//			}
+//		} else {
+//			logger.debug("Async mode is not used");
+//			return threadEntryFacade.copy(ownerUuid, threadUuid, entryUuid);
+//		}
+//	}
 
 	@Path("/{uuid}")
 	@GET
@@ -367,6 +367,46 @@ public class ThreadEntryRestServiceImpl extends WebserviceBase implements
 		logger.debug("Exception : ", e);
 		if (asyncTask != null) {
 			asyncTaskFacade.fail(ownerUuid, asyncTask, e);
+		}
+	}
+
+	@Path("/copy")
+	@POST
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@ApiOperation(value = "Create a thread entry which will contain the uploaded file.", response = WorkGroupEntryDto.class)
+	@ApiResponses({ @ApiResponse(code = 403, message = "Current logged in account does not have the delegation role."),
+					@ApiResponse(code = 404, message = "Thread entry not found."),
+					@ApiResponse(code = 400, message = "Bad request : missing required fields."),
+					@ApiResponse(code = 500, message = "Internal server error."),
+					})
+	@Override
+	public WorkGroupEntryDto copy(
+			@ApiParam(value = "The owner (user) uuid.", required = true) @PathParam("ownerUuid") String ownerUuid,
+			@ApiParam(value = "The thread uuid.", required = true) @PathParam("threadUuid") String threadUuid,
+			@ApiParam(value = "The document entry uuid.", required = true) @PathParam("entryUuid")  String entryUuid,
+			@ApiParam(value = "True to enable asynchronous upload processing.", required = false) @QueryParam("async") Boolean async)
+					
+			throws BusinessException {
+		if (async == null) {
+			async = false;
+		}
+		if (async) {
+			logger.debug("Async mode is used");
+			AccountDto actorDto = threadEntryFacade.getAuthenticatedAccountDto();
+			AsyncTaskDto asyncTask = null;
+			try {
+				asyncTask = asyncTaskFacade.create(ownerUuid, entryUuid, AsyncTaskType.DOCUMENT_COPY);
+				ThreadEntryTaskContext tetc = new ThreadEntryTaskContext(actorDto, ownerUuid, threadUuid, entryUuid, null);
+				ThreadEntryCopyAsyncTask task = new ThreadEntryCopyAsyncTask(threadEntryAsyncFacade, tetc, asyncTask);
+				taskExecutor.execute(task);
+				return new WorkGroupEntryDto(asyncTask, tetc);
+			} catch (Exception e) {
+				logAsyncFailure(ownerUuid, asyncTask, e);
+				throw e;
+			}
+		} else {
+			logger.debug("Async mode is not used");
+			return threadEntryFacade.copy(ownerUuid, threadUuid, entryUuid);
 		}
 	}
 }

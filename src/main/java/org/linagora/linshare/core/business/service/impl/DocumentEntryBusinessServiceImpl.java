@@ -560,7 +560,8 @@ public class DocumentEntryBusinessServiceImpl implements DocumentEntryBusinessSe
 
 		FileMetaData ret = null;
 		FileResourceFactory fileResourceFactory = FileResourceFactory.getInstance();
-		FileResource fileResource = fileResourceFactory.getFileResource(tempFile, fileName);
+//		FileResource fileResource = fileResourceFactory.getFileResource(tempFile, fileName);
+		FileResource fileResource = fileResourceFactory.getFileResource(tempFile);
 		InputStream fisThmb = null;
 		BufferedImage bufferedImage=null;
 		File tempThumbFile = null;

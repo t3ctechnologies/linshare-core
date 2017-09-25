@@ -235,6 +235,7 @@ public class ThreadEntryRestServiceImpl extends WebserviceBase implements
 	public void head(String threadUuid, String uuid) throws BusinessException {
 		facade.find(null, threadUuid, uuid, false);
 	}
+	
 
 	@Path("/")
 	@GET
