@@ -3,7 +3,7 @@
 <hibernate-mapping>
  <class name="org.linagora.linshare.core.domain.entities.OrganizationAccess" table="organizationaccess">  
     <id name="id" column="id">  
-     <generator class="guid"></generator>  
+     <generator class="uuid"></generator>  
     </id>
     
 	

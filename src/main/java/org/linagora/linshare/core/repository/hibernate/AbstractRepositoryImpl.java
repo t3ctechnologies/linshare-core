@@ -86,8 +86,9 @@ public abstract class AbstractRepositoryImpl<T> implements AbstractRepository<T>
         logger.debug("entity created:"+entity);
         // perform unicity check:
         checkUnicity(entity);
-
+        System.out.println("Check2");
         hibernateTemplate.save(entity);
+        System.out.println("Check3");
         return entity;
     }
 

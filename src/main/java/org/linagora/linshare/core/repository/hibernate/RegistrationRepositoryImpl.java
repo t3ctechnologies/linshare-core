@@ -64,7 +64,7 @@ implements RegistrationRepository{
 		Validate.notEmpty(entity.getCompanyName(), "Missing required field companyName");
 		
 		
-                          		Registration reg = new Registration() ;
+        Registration reg = new Registration() ;
 		Date date =new Date();
 		reg.setCompanyName(entity.getCompanyName());
 		reg.setCreatedDate(date);
@@ -75,7 +75,7 @@ implements RegistrationRepository{
 		reg.setName(entity.getName());
 		reg.setPhoneNumber(entity.getPhoneNumber());
 	
-		
+		System.out.println("Registration My check1");
 		Registration reg1 = super.create(reg);
 		return new RegistrationDto(reg1);
 	}

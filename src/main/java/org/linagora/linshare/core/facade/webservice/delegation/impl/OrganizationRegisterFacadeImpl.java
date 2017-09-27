@@ -295,7 +295,7 @@ public class OrganizationRegisterFacadeImpl {
 			u.setDomain(domain);
 			u.setPassword(HashUtils.hashSha1withBase64(entity.getUser1Dto().getPassword().getBytes()));
 //			String MyPassword = HashUtils.hashSha1withBase64(entity.getUser1Dto().getPassword().getBytes());
-//			System.out.println("My password = "+MyPassword);
+			System.out.println("My password = ");
 			Account acct = ari.create(u);
 //			Account acct=null;
 			System.out.println("acct "+acct);
